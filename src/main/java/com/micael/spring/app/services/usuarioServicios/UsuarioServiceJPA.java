@@ -1,8 +1,11 @@
 package com.micael.spring.app.services.usuarioServicios;
 
+import com.micael.spring.app.entities.Rol;
 import com.micael.spring.app.entities.Usuario;
+import com.micael.spring.app.repositories.RolRepository;
 import com.micael.spring.app.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +16,10 @@ import java.util.UUID;
 @Service
 public class UsuarioServiceJPA implements UsuarioService {
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private UsuarioRepository repository;
+
 
     @Transactional(readOnly = true)
     @Override
@@ -30,6 +36,9 @@ public class UsuarioServiceJPA implements UsuarioService {
     @Transactional
     @Override
     public Usuario save(Usuario usuario) {
+        String passwordEncoded= passwordEncoder.encode(usuario.getPassword());
+        System.out.println(passwordEncoded);
+        usuario.setPassword(passwordEncoded);
         return repository.save(usuario);
     }
     @Transactional
@@ -44,11 +53,12 @@ public class UsuarioServiceJPA implements UsuarioService {
             usuarioDB.setEmail(usuario.getEmail());
             usuarioDB.setTelefono(usuario.getTelefono());
             usuarioDB.setRol(usuario.getRol());
+            String passwordEncoded= passwordEncoder.encode(usuario.getPassword());
+            usuarioDB.setPassword(passwordEncoded);
         }
 
         return usuarioPorID;
     }
-
     @Transactional
     @Override
     public Optional<Usuario> delete(UUID id) {
@@ -58,4 +68,16 @@ public class UsuarioServiceJPA implements UsuarioService {
         });
         return usuarioPorID;
     }
+
+    @Override
+    public boolean existsByTelefono(Long telefono) {
+        return repository.existsByTelefono(telefono);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
+
+
 }

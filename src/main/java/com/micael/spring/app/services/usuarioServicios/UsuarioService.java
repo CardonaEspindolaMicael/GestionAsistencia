@@ -12,7 +12,8 @@ public interface UsuarioService {
     Usuario save(Usuario usuario);
     Optional<Usuario> update(UUID id, Usuario usuario);
     Optional<Usuario> delete(UUID id);
-
+    boolean existsByTelefono(Long telefono);
+    boolean existsByEmail(String email);
 
 
 }
