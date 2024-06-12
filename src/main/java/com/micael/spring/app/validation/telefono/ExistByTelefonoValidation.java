@@ -1,6 +1,6 @@
 package com.micael.spring.app.validation.telefono;
 
-import com.micael.spring.app.services.usuarioServicios.UsuarioService;
+import com.micael.spring.app.services.administracionDeUsuarios.usuarioServicios.UsuarioService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

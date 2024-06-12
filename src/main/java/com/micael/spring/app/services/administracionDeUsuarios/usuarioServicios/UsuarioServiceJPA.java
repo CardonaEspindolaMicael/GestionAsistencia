@@ -1,9 +1,10 @@
-package com.micael.spring.app.services.usuarioServicios;
+package com.micael.spring.app.services.administracionDeUsuarios.usuarioServicios;
 
-import com.micael.spring.app.entities.Rol;
-import com.micael.spring.app.entities.Usuario;
-import com.micael.spring.app.repositories.RolRepository;
-import com.micael.spring.app.repositories.UsuarioRepository;
+import com.micael.spring.app.DTO.UsuarioDto;
+import com.micael.spring.app.entities.administracionDeUsuarios.Rol;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
+import com.micael.spring.app.repositories.administracionDeUsuarios.RolRepository;
+import com.micael.spring.app.repositories.administracionDeUsuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class UsuarioServiceJPA implements UsuarioService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioRepository repository;
+    @Autowired
+    private RolRepository rolRepository;
 
 
     @Transactional(readOnly = true)
@@ -35,11 +38,14 @@ public class UsuarioServiceJPA implements UsuarioService {
 
     @Transactional
     @Override
-    public Usuario save(Usuario usuario) {
-        String passwordEncoded= passwordEncoder.encode(usuario.getPassword());
-        System.out.println(passwordEncoded);
-        usuario.setPassword(passwordEncoded);
-        return repository.save(usuario);
+    public UsuarioDto save(UsuarioDto usuarioDto) {
+        String passwordEncoded= passwordEncoder.encode(usuarioDto.getPassword());
+        Rol rol=rolRepository.findById(usuarioDto.getId_rol()).orElseThrow(()-> new RuntimeException("El rol no existe"));
+        Usuario usuario=new Usuario(usuarioDto.getId(), usuarioDto.getNombre(), usuarioDto.getApellidoPaterno(),
+                usuarioDto.getApellidoMaterno(), passwordEncoded, usuarioDto.getEmail(),usuarioDto.getTelefono(),rol,null,null );
+        Usuario response=repository.save(usuario);
+        usuarioDto.setId(response.getId());
+        return usuarioDto;
     }
     @Transactional
     @Override
@@ -77,6 +83,11 @@ public class UsuarioServiceJPA implements UsuarioService {
     @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
 

@@ -1,4 +1,5 @@
-package com.micael.spring.app.entities;
+package com.micael.spring.app.entities.administracionDeUsuarios;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.micael.spring.app.validation.email.ExistsByEmail;
 import com.micael.spring.app.validation.telefono.ExistByTelefono;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -48,5 +50,11 @@ public class Usuario {
     @ManyToOne()
     @JoinColumn(name = "id_rol")
     private Rol rol;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Licencia> licencias;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<Asistencia> asistencias;
 
 }

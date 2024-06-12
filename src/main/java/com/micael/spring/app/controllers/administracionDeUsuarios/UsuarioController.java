@@ -1,7 +1,8 @@
-package com.micael.spring.app.controllers;
+package com.micael.spring.app.controllers.administracionDeUsuarios;
 
-import com.micael.spring.app.entities.Usuario;
-import com.micael.spring.app.services.usuarioServicios.UsuarioService;
+import com.micael.spring.app.DTO.UsuarioDto;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
+import com.micael.spring.app.services.administracionDeUsuarios.usuarioServicios.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,19 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/byEmail/{email}")
+    public ResponseEntity<?> viewEmail(@PathVariable String email){
+        System.out.println(email);
+        Optional<Usuario> usuarioOptional= service.findByEmail(email);
+        if(usuarioOptional.isPresent()){
+            return ResponseEntity.ok(usuarioOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody UsuarioDto usuario, BindingResult result){
       if(result.hasErrors()){
        return validation(result);
       }
@@ -62,6 +74,7 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String,String> errors= new HashMap<>();
         result.getFieldErrors().forEach(err ->{
@@ -69,4 +82,6 @@ public class UsuarioController {
         });
      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+
 }

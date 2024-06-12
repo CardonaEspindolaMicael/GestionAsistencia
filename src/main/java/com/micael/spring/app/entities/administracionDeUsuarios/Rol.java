@@ -1,4 +1,4 @@
-package com.micael.spring.app.entities;
+package com.micael.spring.app.entities.administracionDeUsuarios;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

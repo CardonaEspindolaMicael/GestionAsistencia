@@ -1,8 +1,8 @@
-package com.micael.spring.app.services.usuarioServicios;
+package com.micael.spring.app.services.administracionDeUsuarios.usuarioServicios;
 
 
-import com.micael.spring.app.entities.Usuario;
-import com.micael.spring.app.repositories.UsuarioRepository;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
+import com.micael.spring.app.repositories.administracionDeUsuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

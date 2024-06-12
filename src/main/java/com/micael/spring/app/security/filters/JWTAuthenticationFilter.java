@@ -1,7 +1,7 @@
 package com.micael.spring.app.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.micael.spring.app.entities.Usuario;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -68,9 +68,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                          compact();
          response.addHeader(HEADER_AUTHORIZATION,PREFIX_TOKEN + token);
         Map<String,String> body= new HashMap<>();
-        body.put("token",token);
+        body.put("sessionToken",token);
         body.put("email",username);
-        body.put("rol", usuario.getAuthorities().toString());
         body.put("message",String.format("%s correo valido",username));
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
         response.setContentType(CONTENT_TYPE);
