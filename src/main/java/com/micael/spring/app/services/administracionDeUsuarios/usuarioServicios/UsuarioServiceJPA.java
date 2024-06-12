@@ -42,7 +42,7 @@ public class UsuarioServiceJPA implements UsuarioService {
         String passwordEncoded= passwordEncoder.encode(usuarioDto.getPassword());
         Rol rol=rolRepository.findById(usuarioDto.getId_rol()).orElseThrow(()-> new RuntimeException("El rol no existe"));
         Usuario usuario=new Usuario(usuarioDto.getId(), usuarioDto.getNombre(), usuarioDto.getApellidoPaterno(),
-                usuarioDto.getApellidoMaterno(), passwordEncoded, usuarioDto.getEmail(),usuarioDto.getTelefono(),rol,null,null );
+                usuarioDto.getApellidoMaterno(), passwordEncoded, usuarioDto.getEmail(),usuarioDto.getTelefono(),rol,null,null,null );
         Usuario response=repository.save(usuario);
         usuarioDto.setId(response.getId());
         return usuarioDto;

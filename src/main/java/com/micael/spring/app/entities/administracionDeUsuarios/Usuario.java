@@ -1,6 +1,7 @@
 package com.micael.spring.app.entities.administracionDeUsuarios;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.micael.spring.app.entities.moduloUniversidad.DocenteFacultad;
 import com.micael.spring.app.validation.email.ExistsByEmail;
 import com.micael.spring.app.validation.telefono.ExistByTelefono;
 import jakarta.persistence.*;
@@ -56,5 +57,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<Asistencia> asistencias;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
+    private List<DocenteFacultad> docenteFacultades;
 
 }

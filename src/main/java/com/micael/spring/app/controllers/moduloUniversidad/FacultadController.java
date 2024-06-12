@@ -1,9 +1,8 @@
-package com.micael.spring.app.controllers.administracionDeUsuarios;
+package com.micael.spring.app.controllers.moduloUniversidad;
 
 import com.micael.spring.app.DTO.LicenciaDTO;
-import com.micael.spring.app.entities.administracionDeUsuarios.Licencia;
-import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
-import com.micael.spring.app.services.administracionDeUsuarios.licenciaServicios.LicenciaService;
+import com.micael.spring.app.entities.moduloUniversidad.Facultad;
+import com.micael.spring.app.services.moduloUniversidad.facultadServicios.FacultadService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,43 +10,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/licencias")
-public class LicenciaController {
+@RequestMapping("/facultades")
+public class FacultadController {
     @Autowired
-    private LicenciaService service;
+    private FacultadService service;
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody LicenciaDTO licencia, BindingResult result){
+    public ResponseEntity<?> create(@Valid @RequestBody Facultad facultad, BindingResult result){
         if(result.hasErrors()){
             return validation(result);
         }
-        return  ResponseEntity.status(201).body(service.save(licencia));
+        return  ResponseEntity.status(201).body(service.save(facultad));
     }
 
     @GetMapping
-    public List<LicenciaDTO> list(){
+    public List<Facultad> list(){
         return service.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable int id){
-        Optional<LicenciaDTO> usuarioOptional= service.findById(id);
-        if(usuarioOptional.isPresent()){
-            return ResponseEntity.ok(usuarioOptional.orElseThrow());
+        Optional<Facultad> facultadOptional= service.findById(id);
+        if(facultadOptional.isPresent()){
+            return ResponseEntity.ok(facultadOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<?> update(@Valid @RequestBody LicenciaDTO usuario, BindingResult result, @PathVariable int id){
+    public  ResponseEntity<?> update(@Valid @RequestBody Facultad facultad, BindingResult result, @PathVariable int id){
         if(result.hasErrors()){
             return validation(result);
         }
-        ResponseEntity<String> response=service.update(id,usuario);
+        ResponseEntity<String> response=service.update(id,facultad);
         if (response.hasBody()){
             return response;
         }
@@ -56,9 +58,9 @@ public class LicenciaController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
-        ResponseEntity<String> usuarioOptional= service.delete(id);
-        if(usuarioOptional.hasBody()){
-            return usuarioOptional;
+        ResponseEntity<String> facultadOptional= service.delete(id);
+        if(facultadOptional.hasBody()){
+            return facultadOptional;
         }
         return ResponseEntity.notFound().build();
     }
@@ -71,7 +73,5 @@ public class LicenciaController {
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-
-
 
 }
