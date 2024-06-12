@@ -19,9 +19,6 @@ public class DocenteFacultad {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotBlank
-    @Size(min=1,max = 2)
-    private int semestre;
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
