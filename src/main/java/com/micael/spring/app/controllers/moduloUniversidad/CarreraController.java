@@ -1,9 +1,8 @@
 package com.micael.spring.app.controllers.moduloUniversidad;
 
-
-import com.micael.spring.app.DTO.DocenteFacultadCreateDto;
-import com.micael.spring.app.DTO.DocenteFacultadDto;
-import com.micael.spring.app.services.moduloUniversidad.docenteFacultad.DocenteFacultadService;
+import com.micael.spring.app.DTO.CarreraDto;
+import com.micael.spring.app.DTO.LicenciaDTO;
+import com.micael.spring.app.services.moduloUniversidad.carreraServicios.CarreraService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,32 +17,34 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/docenteFacultades")
-public class DocenteFacultadController {
+@RequestMapping("/carreras")
+public class CarreraController {
     @Autowired
-    DocenteFacultadService service;
+    private CarreraService service;
+
 
     @GetMapping
-    public List<DocenteFacultadDto> list(){
+    public List<CarreraDto> list(){
         return service.findAll();
-    }
-
-    @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody DocenteFacultadCreateDto licencia, BindingResult result){
-        if(result.hasErrors()){
-            return validation(result);
-        }
-        return  ResponseEntity.status(201).body(service.save(licencia));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> view(@PathVariable int id){
-        Optional<DocenteFacultadDto> responseOptional= service.findById(id);
-        if(responseOptional.isPresent()){
-            return ResponseEntity.ok(responseOptional.orElseThrow());
+        Optional<CarreraDto> usuarioOptional= service.findById(id);
+        if(usuarioOptional.isPresent()){
+            return ResponseEntity.ok(usuarioOptional.orElseThrow());
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody CarreraDto carrera, BindingResult result){
+        if(result.hasErrors()){
+            return validation(result);
+        }
+        return  service.save(carrera);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
@@ -61,6 +62,4 @@ public class DocenteFacultadController {
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-
-
 }

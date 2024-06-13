@@ -27,4 +27,10 @@ public class Facultad {
     @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<DocenteFacultad> docenteFacultades;
+    @JsonIgnore
+    @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ModuloFacultativo> moduloFacultativos;
+    @JsonIgnore
+    @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Carrera> carreras ;
 }

@@ -56,7 +56,7 @@ public class DocenteFacultadServiceJPA implements DocenteFacultadService{
                         )
                                 ,new Facultad(facultad.getId(),
                                 facultad.getNombre(),
-                                facultad.getSigla(),null)));
+                                facultad.getSigla(),null,null,null)));
             }
         }
         return licenciaDTOList;
@@ -109,7 +109,7 @@ public class DocenteFacultadServiceJPA implements DocenteFacultadService{
                     usuario.getRol().getId()
             ),new Facultad(facultad.getId(),
                     facultad.getNombre(),
-                    facultad.getSigla(),null) ));
+                    facultad.getSigla(),null,null,null) ));
 
         }
         return Optional.empty();
