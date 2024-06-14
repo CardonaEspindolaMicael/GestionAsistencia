@@ -8,9 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CarreraDto {
+public class CarreraMateriaCreateDto {
     int id;
-    final String nombre;
-    final int anios;
-    final int id_facultad;
+    int id_carrera;
+    int id_materia;
 }

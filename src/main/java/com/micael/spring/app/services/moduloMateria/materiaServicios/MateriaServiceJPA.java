@@ -1,5 +1,6 @@
 package com.micael.spring.app.services.moduloMateria.materiaServicios;
 
+import com.micael.spring.app.DTO.CarreraDto;
 import com.micael.spring.app.DTO.MateriaDto;
 import com.micael.spring.app.entities.moduloMateria.Area;
 import com.micael.spring.app.entities.moduloMateria.Materia;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +28,37 @@ public class MateriaServiceJPA implements MateriaService {
     @Transactional(readOnly = true)
     @Override
     public List<Materia> findAll() {
-        return (List<Materia>) repository.findAll();
+        List<Materia> materias= (List<Materia>) repository.findAll();
+        List<Materia> dtoList=new ArrayList<>();
+        if(!materias.isEmpty()){
+            for(Materia materia:materias){
+             Area area=areaRepository.findById(materia.getArea().getId()).orElseThrow();
+                dtoList.add(
+                        new Materia(
+                                materia.getId(),
+                                materia.getNombre(),
+                                materia.getSiglas(),
+                                materia.getNivel(),
+                                new Area(area.getId(),area.getNombre(),null),null
+                        )
+                        );
+            }
+        }
+        return dtoList;
     }
     @Transactional(readOnly = true)
     @Override
     public Optional<Materia> findById(int id) {
-        return repository.findById(id);
+        Materia materia=repository.findById(id).orElseThrow();
+        Area area=areaRepository.findById(materia.getArea().getId()).orElseThrow();
+        Optional<Materia> materiaOptional= Optional.of(new Materia(
+                materia.getId(),
+                materia.getNombre(),
+                materia.getSiglas(),
+                materia.getNivel(),
+                new Area(area.getId(), area.getNombre(), null), null
+        ));
+        return  materiaOptional;
     }
 
     @Override

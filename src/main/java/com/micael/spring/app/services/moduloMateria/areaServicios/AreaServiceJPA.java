@@ -3,11 +3,13 @@ package com.micael.spring.app.services.moduloMateria.areaServicios;
 import com.micael.spring.app.entities.moduloMateria.Area;
 import com.micael.spring.app.entities.moduloMateria.Materia;
 import com.micael.spring.app.repositories.materiaRepository.AreaRepository;
+import com.micael.spring.app.repositories.materiaRepository.MateriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,15 +17,65 @@ import java.util.Optional;
 public class AreaServiceJPA implements AreaService{
     @Autowired
     AreaRepository repository;
+    @Autowired
+    MateriaRepository materiaRepository;
 
     @Override
     public List<Area> findAll() {
-        return (List<Area>) repository.findAll();
+
+        List<Area> areas= (List<Area>) repository.findAll();
+        List<Area> dtoList=new ArrayList<>();
+        if(!areas.isEmpty()){
+            for(Area area:areas){
+                List<Materia> materiaList=materiaRepository.findMateriasByAreaId(area.getId());
+                List<Materia> materiasActualizadas=new ArrayList<>();
+                for(Materia materia:materiaList){
+                 materiasActualizadas.add(
+                         new Materia(
+                                 materia.getId(),
+                                 materia.getNombre(),
+                                 materia.getSiglas(),
+                                 materia.getNivel(),
+                                 null,null
+                         ));
+                }
+                dtoList.add(
+                        new Area(
+                                area.getId(),
+                                area.getNombre(),
+                                materiasActualizadas
+                        )
+                );
+            }
+        }
+        return dtoList;
     }
 
     @Override
     public Optional<Area> findById(int id) {
-        return repository.findById(id);
+        Area area= repository.findById(id).orElseThrow();
+
+                List<Materia> materiaList=materiaRepository.findMateriasByAreaId(area.getId());
+                List<Materia> materiasActualizadas=new ArrayList<>();
+                for(Materia materia:materiaList){
+                    materiasActualizadas.add(
+                            new Materia(
+                                    materia.getId(),
+                                    materia.getNombre(),
+                                    materia.getSiglas(),
+                                    materia.getNivel(),
+                                    null,null
+                            ));
+                }
+
+                       return Optional.of(new Area(
+                               area.getId(),
+                               area.getNombre(),
+                               materiasActualizadas
+
+                       ));
+
+
     }
 
     @Override

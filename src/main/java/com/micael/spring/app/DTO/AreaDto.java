@@ -5,12 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 @Setter
-public class CarreraDto {
+public class AreaDto {
     int id;
     final String nombre;
-    final int anios;
-    final int id_facultad;
+    List<MateriaDto> materia;
 }

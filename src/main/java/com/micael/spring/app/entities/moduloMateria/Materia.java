@@ -1,6 +1,8 @@
 package com.micael.spring.app.entities.moduloMateria;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.micael.spring.app.entities.moduloUniversidad.DocenteEnsena;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name="materia")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Materia {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
