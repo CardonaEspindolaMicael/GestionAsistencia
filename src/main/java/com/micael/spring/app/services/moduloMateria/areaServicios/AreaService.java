@@ -19,4 +19,5 @@ public interface AreaService {
     ResponseEntity<String> update(int id, Area area);
 
     ResponseEntity<String> delete(int id);
+
 }
