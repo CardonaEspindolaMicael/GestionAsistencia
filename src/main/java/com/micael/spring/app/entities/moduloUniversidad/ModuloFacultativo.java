@@ -1,5 +1,7 @@
 package com.micael.spring.app.entities.moduloUniversidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.micael.spring.app.entities.moduloMateria.ModuloEnsenanza;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +32,7 @@ public class ModuloFacultativo {
     @ManyToOne
     @JoinColumn(name = "id_facultad")
     private Facultad facultad;
+    @JsonIgnore
+    @OneToMany(mappedBy = "moduloFacultativo", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ModuloEnsenanza> moduloEnsenanzaList;
 }

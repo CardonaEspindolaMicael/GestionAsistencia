@@ -6,6 +6,7 @@ import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
 import com.micael.spring.app.repositories.administracionDeUsuarios.RolRepository;
 import com.micael.spring.app.repositories.administracionDeUsuarios.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,18 +50,19 @@ public class UsuarioServiceJPA implements UsuarioService {
     }
     @Transactional
     @Override
-    public Optional<Usuario> update(UUID id, Usuario usuario) {
+    public Optional<Usuario> update(UUID id, UsuarioDto usuario) {
         Optional<Usuario> usuarioPorID= repository.findById(id);
         if (usuarioPorID.isPresent()) {
+            Rol rol= rolRepository.findById(usuario.getId_rol()).orElseThrow();
             Usuario usuarioDB= usuarioPorID.orElseThrow();
             usuarioDB.setNombre(usuario.getNombre());
             usuarioDB.setApellidoMaterno(usuario.getApellidoMaterno());
             usuarioDB.setApellidoPaterno(usuario.getApellidoPaterno());
             usuarioDB.setEmail(usuario.getEmail());
             usuarioDB.setTelefono(usuario.getTelefono());
-            usuarioDB.setRol(usuario.getRol());
-            String passwordEncoded= passwordEncoder.encode(usuario.getPassword());
-            usuarioDB.setPassword(passwordEncoded);
+            usuarioDB.setRol(rol);
+          /*  String passwordEncoded= passwordEncoder.encode(usuario.getPassword());
+            usuarioDB.setPassword(passwordEncoded);*/
         }
 
         return usuarioPorID;

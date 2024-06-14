@@ -51,7 +51,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result,@PathVariable UUID id){
+    public  ResponseEntity<?> update(@Valid @RequestBody UsuarioDto usuario, BindingResult result,@PathVariable UUID id){
         if(result.hasErrors()){
             return validation(result);
         }

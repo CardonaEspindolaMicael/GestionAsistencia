@@ -60,7 +60,7 @@ public class ModuloFacultativoServiceJPA implements ModuloFacultativoService{
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         ModuloFacultativo licencia = new ModuloFacultativo(modulo.getId(),
-                modulo.getNombre(), modulo.getNumero(),facultad);
+                modulo.getNombre(), modulo.getNumero(),facultad,null);
         ModuloFacultativo response=repository.save(licencia);
         return ResponseEntity.ok("Creado exitosamente");
     }

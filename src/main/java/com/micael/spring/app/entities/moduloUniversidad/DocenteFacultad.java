@@ -1,5 +1,6 @@
 package com.micael.spring.app.entities.moduloUniversidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,5 +28,8 @@ public class DocenteFacultad {
     @ManyToOne
     @JoinColumn(name = "id_facultad")
     private Facultad facultad;
+    @JsonIgnore
+    @OneToMany(mappedBy = "docenteFacultad", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<DocenteEnsena> docenteEnsenaList;
 
 }

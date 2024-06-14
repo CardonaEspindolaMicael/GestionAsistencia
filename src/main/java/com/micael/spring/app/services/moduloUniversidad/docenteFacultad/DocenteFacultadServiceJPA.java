@@ -66,7 +66,7 @@ public class DocenteFacultadServiceJPA implements DocenteFacultadService{
     public DocenteFacultadCreateDto save(DocenteFacultadCreateDto docenteFac) {
         Usuario usuario = usuarioRepository.findById(docenteFac.getId_usuario()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Facultad facultad = facultadRepository.findById(docenteFac.getId_facultad()).orElseThrow(() -> new RuntimeException("Facu no encontrado"));
-        DocenteFacultad licencia = new DocenteFacultad(docenteFac.getId(),usuario,facultad);
+        DocenteFacultad licencia = new DocenteFacultad(docenteFac.getId(),usuario,facultad,null);
         DocenteFacultad response=repository.save(licencia);
         docenteFac.setId(response.getId());
         return docenteFac;

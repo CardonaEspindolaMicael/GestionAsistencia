@@ -11,7 +11,7 @@ public interface UsuarioService {
     List<Usuario> findAll();
     Optional<Usuario> findById(UUID id);
     UsuarioDto save(UsuarioDto usuario);
-    Optional<Usuario> update(UUID id, Usuario usuario);
+    Optional<Usuario> update(UUID id, UsuarioDto usuario);
     Optional<Usuario> delete(UUID id);
     boolean existsByTelefono(Long telefono);
     boolean existsByEmail(String email);

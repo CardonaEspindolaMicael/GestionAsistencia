@@ -62,7 +62,7 @@ public class CarreraServiceJPA implements CarreraService{
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         System.out.println(carreraDto.getAnios()+' '+carreraDto.getNombre());
         Carrera licencia = new Carrera(carreraDto.getId(),
-                carreraDto.getNombre(), carreraDto.getAnios(),facultad);
+                carreraDto.getNombre(), carreraDto.getAnios(),facultad,null);
         Carrera response=repository.save(licencia);
         return ResponseEntity.ok("Creado exitosamente");
     }

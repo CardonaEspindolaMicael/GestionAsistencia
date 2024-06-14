@@ -1,6 +1,7 @@
 package com.micael.spring.app.entities.administracionDeUsuarios;
 
 
+import com.micael.spring.app.entities.moduloGrupo.MateriaGrupo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +22,9 @@ public class Asistencia {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
+    @ManyToOne
+    @JoinColumn(name = "id_materiaGrupo")
+    private MateriaGrupo materiaGrupos;
     @PrePersist
     public void prePersist() {
         fecha = LocalDate.now();
