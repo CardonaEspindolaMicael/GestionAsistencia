@@ -17,7 +17,7 @@ import java.util.Optional;
 @CrossOrigin
 @RestController
 @RequestMapping("/materias")
-public class materiaController {
+public class MateriaController {
     @Autowired
     MateriaService service;
 
