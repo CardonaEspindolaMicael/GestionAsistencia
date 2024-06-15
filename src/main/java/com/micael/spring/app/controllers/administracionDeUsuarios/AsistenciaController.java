@@ -46,13 +46,15 @@ public class AsistenciaController {
     }
 
     @PutMapping("/marcar/{id}")
-    public  ResponseEntity<?> updateAsistence( @PathVariable UUID id){
+    public  ResponseEntity<Object> updateAsistence( @PathVariable UUID id){
 
-        ResponseEntity<String> response= null;
+        ResponseEntity<Object> response= null;
         try {
             return service.actualizarAsistencia(id);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en este endopoint");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("message", "Un error a ocurrido"));
         }
 
     }

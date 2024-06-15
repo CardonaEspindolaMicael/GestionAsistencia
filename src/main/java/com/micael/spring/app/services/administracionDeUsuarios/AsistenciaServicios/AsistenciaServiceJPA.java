@@ -20,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AsistenciaServiceJPA implements AsistenciaService{
@@ -103,23 +100,29 @@ public class AsistenciaServiceJPA implements AsistenciaService{
 
     @Transactional
     @Override
-    public ResponseEntity<String> actualizarAsistencia(UUID id_usuario) {
-        List<Asistencia> asistenciaList=  repository.findAsistenciasByTimeAndUsuarioId(id_usuario, LocalDate.now(), LocalTime.now());
-        if(asistenciaList.isEmpty()){
-            return new ResponseEntity<>("No puede marcar asistencias en este horario", HttpStatus.FORBIDDEN);
+    public ResponseEntity<Object> actualizarAsistencia(UUID id_usuario) {
+        List<Asistencia> asistenciaList = repository.findAsistenciasByTimeAndUsuarioId(id_usuario, LocalDate.now(), LocalTime.now());
+        if (asistenciaList.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("message", "No puede marcar asistencias en este horario"));
         }
 
-            for(Asistencia asistencia:asistenciaList){
-                if (asistencia.isAsistio()){
-                    return new ResponseEntity<>("Usted ya agrego su asistencia en este horario", HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
-                }
-                Asistencia asistenciaUpdate=repository.findById(asistencia.getId()).orElseThrow();
-                asistenciaUpdate.setAsistio(true);
-                asistenciaUpdate.setFecha(LocalDate.now());
-                asistenciaUpdate.setHora(LocalTime.now());
+        for (Asistencia asistencia : asistenciaList) {
+            if (asistencia.isAsistio()) {
+                return ResponseEntity
+                        .status(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
+                        .body(Collections.singletonMap("message", "Usted ya agrego su asistencia en este horario"));
             }
+            Asistencia asistenciaUpdate = repository.findById(asistencia.getId()).orElseThrow();
+            asistenciaUpdate.setAsistio(true);
+            asistenciaUpdate.setFecha(LocalDate.now());
+            asistenciaUpdate.setHora(LocalTime.now());
+        }
 
-        return new ResponseEntity<>("Asistencia Actualizada", HttpStatus.ACCEPTED);
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(Collections.singletonMap("message", "Asistencia Actualizada"));
     }
 
 

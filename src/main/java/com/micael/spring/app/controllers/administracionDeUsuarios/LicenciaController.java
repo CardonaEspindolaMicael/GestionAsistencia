@@ -47,7 +47,7 @@ public class LicenciaController {
         if(result.hasErrors()){
             return validation(result);
         }
-        ResponseEntity<String> response=service.update(id,usuario);
+        ResponseEntity<Object> response=service.update(id,usuario);
         if (response.hasBody()){
             return response;
         }
@@ -56,7 +56,7 @@ public class LicenciaController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
-        ResponseEntity<String> usuarioOptional= service.delete(id);
+        ResponseEntity<Object> usuarioOptional= service.delete(id);
         if(usuarioOptional.hasBody()){
             return usuarioOptional;
         }

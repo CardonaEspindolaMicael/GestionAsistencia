@@ -21,6 +21,6 @@ public interface AsistenciaService {
 
     ResponseEntity<String> delete(int id);
 
-    ResponseEntity<String> actualizarAsistencia(UUID id_usuario);
+    ResponseEntity<Object> actualizarAsistencia(UUID id_usuario);
 
 }

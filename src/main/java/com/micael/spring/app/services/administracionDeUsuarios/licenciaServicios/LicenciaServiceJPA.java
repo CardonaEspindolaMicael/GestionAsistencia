@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,32 +49,40 @@ public class LicenciaServiceJPA implements LicenciaService{
 
     @Transactional
     @Override
-    public ResponseEntity<String> update(int id, LicenciaDTO licenciaDto) {
+    public ResponseEntity<Object> update(int id, LicenciaDTO licenciaDto) {
         try {
-            Optional<Licencia> licencia=repository.findById(id);
+            Optional<Licencia> licencia = repository.findById(id);
             Usuario usuario = usuarioRepository.findById(licenciaDto.getId_usuario()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            if(licencia.isPresent()){
-                Licencia licenciaDB=licencia.orElseThrow();
+            if (licencia.isPresent()) {
+                Licencia licenciaDB = licencia.orElseThrow();
                 licenciaDB.setMotivo(licenciaDto.getMotivo());
                 licenciaDB.setFecha(licenciaDto.getFecha());
                 licenciaDB.setUsuario(usuario);
-                return new ResponseEntity<>("La licencia fue actualizada",HttpStatus.ACCEPTED);
+                return ResponseEntity
+                        .status(HttpStatus.ACCEPTED)
+                        .body(Collections.singletonMap("message", "La licencia fue actualizada"));
             }
         } catch (RuntimeException e) {
-            return new ResponseEntity<>("Algo salio mal" , HttpStatus.BAD_GATEWAY);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_GATEWAY)
+                    .body(Collections.singletonMap("message", "Algo salio mal"));
         }
-        return new ResponseEntity<>("Vacio" , HttpStatus.NOT_FOUND);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap("message", "Vacio"));
     }
 
 
     @Transactional
     @Override
-    public ResponseEntity<String>  delete(int id) {
+    public ResponseEntity<Object>  delete(int id) {
         Optional<Licencia> usuarioPorID= repository.findById(id);
         usuarioPorID.ifPresent(user ->{
             repository.delete(user);
         });
-        return new ResponseEntity<>("Eliminado con exito",HttpStatus.ACCEPTED);
+        return  ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(Collections.singletonMap("message", "Eliminado con exito"));
+
     }
     @Transactional(readOnly = true)
     @Override

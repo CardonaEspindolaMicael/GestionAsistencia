@@ -13,9 +13,9 @@ public interface LicenciaService {
 
     LicenciaDTO save(LicenciaDTO licencia);
 
-    ResponseEntity<String> update(int id, LicenciaDTO licenciaDto);
+    ResponseEntity<Object> update(int id, LicenciaDTO licenciaDto);
 
-    ResponseEntity<String> delete(int id);
+    ResponseEntity<Object> delete(int id);
 
     Optional<LicenciaDTO> findById(int id);
 
