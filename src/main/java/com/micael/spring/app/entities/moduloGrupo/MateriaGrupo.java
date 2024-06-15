@@ -1,6 +1,7 @@
 package com.micael.spring.app.entities.moduloGrupo;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.micael.spring.app.entities.administracionDeUsuarios.Asistencia;
 import com.micael.spring.app.entities.moduloMateria.Materia;
 import com.micael.spring.app.entities.moduloUniversidad.Aula;
@@ -36,6 +37,7 @@ public class MateriaGrupo {
     @ManyToOne
     @JoinColumn(name = "id_horario")
     private Horario horario;
+    @JsonBackReference
     @OneToMany(mappedBy = "materiaGrupos", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Asistencia> asistencias;
 }

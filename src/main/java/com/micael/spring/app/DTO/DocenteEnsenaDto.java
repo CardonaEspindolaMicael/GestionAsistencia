@@ -17,14 +17,22 @@ public class DocenteEnsenaDto {
     MateriaDto materia;
 
     public DocenteEnsenaDto(int id, int gestion, DocenteFacultad docenteFacultad, Materia materia) {
-        this.id=id;
-        this.gestion=gestion;
-        this.docenteFacultad=new DocenteFacultadDto(
+        this.id = id;
+        this.gestion = gestion;
+        this.docenteFacultad = new DocenteFacultadDto(
                 docenteFacultad.getId(),
                 docenteFacultad.getUsuario(),
                 docenteFacultad.getFacultad()
         );
-        this.materia= new MateriaDto(materia.getId(),
-                materia.getNombre(), materia.getSiglas(), materia.getNivel(), getMateria().getId_area());
+        if (materia != null) {
+            this.materia = new MateriaDto(
+                    materia.getId(),
+                    materia.getNombre(),
+                    materia.getSiglas(),
+                    materia.getNivel(),
+                    materia.getArea().getId() // Use the passed-in 'materia' directly
+            );
+        }
     }
+
 }
