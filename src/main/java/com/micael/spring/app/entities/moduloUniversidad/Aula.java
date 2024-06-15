@@ -1,5 +1,6 @@
 package com.micael.spring.app.entities.moduloUniversidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.micael.spring.app.entities.moduloGrupo.MateriaGrupo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,7 @@ public class Aula {
     private int numero;
     @NotNull
     private int capacidad;
+    @JsonBackReference
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<MateriaGrupo> materiaGrupos;
 }
