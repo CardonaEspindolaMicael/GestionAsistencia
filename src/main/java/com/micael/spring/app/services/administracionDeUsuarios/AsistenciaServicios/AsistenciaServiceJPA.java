@@ -1,6 +1,7 @@
 package com.micael.spring.app.services.administracionDeUsuarios.AsistenciaServicios;
 
 import com.micael.spring.app.DTO.AsistenciaDto;
+import com.micael.spring.app.DTO.AsistenciaMarcarDto;
 import com.micael.spring.app.DTO.CarreraDto;
 import com.micael.spring.app.entities.administracionDeUsuarios.Asistencia;
 import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
@@ -17,9 +18,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AsistenciaServiceJPA implements AsistenciaService{
@@ -30,11 +34,13 @@ public class AsistenciaServiceJPA implements AsistenciaService{
     @Autowired
     MateriaGrupoRepository materiaGrupoRepository;
 
+
     @Transactional(readOnly = true)
     @Override
     public List<AsistenciaDto> findAll() {
         List<Asistencia> asistencias= (List<Asistencia>) repository.findAll();
         List<AsistenciaDto> licenciaDTOList=new ArrayList<>();
+     //   crearAsistenciasParaTodosLosUsuario();
         if(!asistencias.isEmpty()){
             for(Asistencia asistencia:asistencias){
                 licenciaDTOList.add( new AsistenciaDto( asistencia.getId(),
@@ -74,8 +80,14 @@ public class AsistenciaServiceJPA implements AsistenciaService{
     }
     @Transactional
     @Override
-    public ResponseEntity<String> update(int id, AsistenciaDto asistencia) {
-        return null;
+    public ResponseEntity<String> update(int id, AsistenciaDto asistenciaDto) {
+        Asistencia asistencia= repository.findById(id).orElseThrow();
+         if(Optional.of(asistencia).isPresent()){
+         //  MateriaGrupo materiaGrupo= materiaGrupoRepository.findById()
+
+         }
+         return new ResponseEntity<>("No se encuentra", HttpStatus.NOT_FOUND);
+
     }
     @Transactional
     @Override
@@ -87,4 +99,29 @@ public class AsistenciaServiceJPA implements AsistenciaService{
         return new ResponseEntity<>("Eliminado con exito", HttpStatus.ACCEPTED);
 
     }
+
+
+    @Transactional
+    @Override
+    public ResponseEntity<String> actualizarAsistencia(UUID id_usuario) {
+        List<Asistencia> asistenciaList=  repository.findAsistenciasByTimeAndUsuarioId(id_usuario, LocalDate.now(), LocalTime.now());
+        if(asistenciaList.isEmpty()){
+            return new ResponseEntity<>("No puede marcar asistencias en este horario", HttpStatus.FORBIDDEN);
+        }
+
+            for(Asistencia asistencia:asistenciaList){
+                if (asistencia.isAsistio()){
+                    return new ResponseEntity<>("Usted ya agrego su asistencia en este horario", HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+                }
+                Asistencia asistenciaUpdate=repository.findById(asistencia.getId()).orElseThrow();
+                asistenciaUpdate.setAsistio(true);
+                asistenciaUpdate.setFecha(LocalDate.now());
+                asistenciaUpdate.setHora(LocalTime.now());
+            }
+
+        return new ResponseEntity<>("Asistencia Actualizada", HttpStatus.ACCEPTED);
+    }
+
+
+
 }

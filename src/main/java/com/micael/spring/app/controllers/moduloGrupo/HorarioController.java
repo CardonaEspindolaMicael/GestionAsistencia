@@ -1,6 +1,4 @@
 package com.micael.spring.app.controllers.moduloGrupo;
-
-import com.micael.spring.app.entities.moduloGrupo.Grupo;
 import com.micael.spring.app.entities.moduloGrupo.Horario;
 import com.micael.spring.app.services.moduloGrupo.horarioServicios.HorarioService;
 import jakarta.validation.Valid;

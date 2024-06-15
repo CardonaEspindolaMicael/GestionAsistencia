@@ -2,7 +2,10 @@ package com.micael.spring.app.controllers.administracionDeUsuarios;
 
 
 import com.micael.spring.app.DTO.AsistenciaDto;
+import com.micael.spring.app.DTO.AsistenciaMarcarDto;
+import com.micael.spring.app.DTO.UsuarioDto;
 import com.micael.spring.app.entities.administracionDeUsuarios.Asistencia;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
 import com.micael.spring.app.entities.moduloGrupo.Grupo;
 import com.micael.spring.app.services.administracionDeUsuarios.AsistenciaServicios.AsistenciaService;
 import jakarta.validation.Valid;
@@ -12,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -43,6 +43,18 @@ public class AsistenciaController {
             return validation(result);
         }
         return  service.save(resp);
+    }
+
+    @PutMapping("/marcar/{id}")
+    public  ResponseEntity<?> updateAsistence( @PathVariable UUID id){
+
+        ResponseEntity<String> response= null;
+        try {
+            return service.actualizarAsistencia(id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en este endopoint");
+        }
+
     }
 
     @DeleteMapping("/{id}")
