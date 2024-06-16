@@ -25,7 +25,7 @@ public class LicenciaController {
         if(result.hasErrors()){
             return validation(result);
         }
-        return  ResponseEntity.status(201).body(service.save(licencia));
+        return  service.save(licencia);
     }
 
     @GetMapping

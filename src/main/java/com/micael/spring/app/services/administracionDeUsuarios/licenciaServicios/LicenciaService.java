@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface LicenciaService {
     List<LicenciaDTO> findAll();
 
-    LicenciaDTO save(LicenciaDTO licencia);
+    ResponseEntity<Object> save(LicenciaDTO licencia);
 
     ResponseEntity<Object> update(int id, LicenciaDTO licenciaDto);
 

@@ -116,11 +116,14 @@ public class AsistenciaServiceJPA implements AsistenciaService{
             asistenciaUpdate.setFecha(LocalDate.now());
             asistenciaUpdate.setHora(LocalTime.now());
         }
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "Asistencia Actualizada");
+        body.put("statusCode", 201);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(Collections.singletonMap("message", "Asistencia Actualizada"));
-    }
+                .body(body);
+          }
     @Scheduled(cron = "0 0 0 * * *", zone = "America/La_Paz")
     @Transactional
    public void crearAsistenciasParaTodosLosUsuario() {

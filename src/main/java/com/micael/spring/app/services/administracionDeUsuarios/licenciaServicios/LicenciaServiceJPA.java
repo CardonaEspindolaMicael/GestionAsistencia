@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LicenciaServiceJPA implements LicenciaService{
@@ -38,13 +35,21 @@ public class LicenciaServiceJPA implements LicenciaService{
 
     @Transactional
     @Override
-    public LicenciaDTO save(LicenciaDTO licenciaDto) {
+    public ResponseEntity<Object> save(LicenciaDTO licenciaDto) {
         Usuario usuario = usuarioRepository.findById(licenciaDto.getId_usuario()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         licenciaDto.prePersist();
         Licencia licencia = new Licencia(licenciaDto.getId(), licenciaDto.getMotivo(), licenciaDto.getFecha(), usuario);
         Licencia response=repository.save(licencia);
         licenciaDto.setId(response.getId());
-        return licenciaDto;
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("message", "Creado con exito");
+        body.put("statusCode", 201);
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(body);
+
     }
 
     @Transactional
