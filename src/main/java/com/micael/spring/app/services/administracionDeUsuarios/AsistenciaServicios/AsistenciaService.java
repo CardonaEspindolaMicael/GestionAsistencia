@@ -23,4 +23,5 @@ public interface AsistenciaService {
 
     ResponseEntity<Object> actualizarAsistencia(UUID id_usuario);
 
+    List<AsistenciaDto> findAsistenciaPorId(UUID idUsuario);
 }

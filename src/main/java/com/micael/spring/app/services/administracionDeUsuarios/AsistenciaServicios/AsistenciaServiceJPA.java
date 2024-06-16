@@ -48,6 +48,25 @@ public class AsistenciaServiceJPA implements AsistenciaService{
         }
         return licenciaDTOList;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<AsistenciaDto> findAsistenciaPorId(UUID idUsuario) {
+        List<Asistencia> asistencias= repository.findByUsuario_Id(idUsuario);
+        List<AsistenciaDto> licenciaDTOList=new ArrayList<>();
+        if(!asistencias.isEmpty()){
+            for(Asistencia asistencia:asistencias){
+                licenciaDTOList.add( new AsistenciaDto( asistencia.getId(),
+                        asistencia.isAsistio(),
+                        asistencia.getFecha(),
+                        asistencia.getHora(),
+                        asistencia.getUsuario().getId(),
+                        asistencia.getMateriaGrupos().getId()
+                ));
+            }
+        }
+        return licenciaDTOList;
+    }
     @Transactional(readOnly = true)
     @Override
     public Optional<AsistenciaDto> findById(int id) {

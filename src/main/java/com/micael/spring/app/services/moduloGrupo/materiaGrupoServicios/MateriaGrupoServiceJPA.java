@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
@@ -91,6 +92,31 @@ public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
             repository.delete(user);
         });
         return new ResponseEntity<>("Eliminado con exito", HttpStatus.ACCEPTED);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<MateriaGrupoDto> findAllByIdUsuario(UUID idUsuario) {
+        List<MateriaGrupo> materiaGrupos= repository.findMateriaGrupoById(idUsuario);
+        List<MateriaGrupoDto> licenciaDTOList=new ArrayList<>();
+
+        if(!materiaGrupos.isEmpty()){
+
+            for(MateriaGrupo materiaGrupo:materiaGrupos){
+                DocenteEnsena docenteEnsena= docenteEnsenaRepository.findById(materiaGrupo.getDocenteEnsena().getId()).orElseThrow();
+                if(Optional.of(docenteEnsena).isPresent()){
+
+
+                    licenciaDTOList.add(
+                            new MateriaGrupoDto(materiaGrupo.getId(),
+                                    new DocenteEnsenaDto(docenteEnsena.getId(),docenteEnsena.getGestion(),docenteEnsena.getDocenteFacultad(),docenteEnsena.getMateria()),
+                                    materiaGrupo.getAula(),materiaGrupo.getGrupo(),materiaGrupo.getHorario()
+
+                            ));
+                }
+            }
+        }
+        return licenciaDTOList;
     }
 
 }

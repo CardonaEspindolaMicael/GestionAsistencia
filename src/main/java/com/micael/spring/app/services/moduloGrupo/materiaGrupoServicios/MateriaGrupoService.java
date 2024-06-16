@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MateriaGrupoService {
     List<MateriaGrupoDto> findAll();
@@ -18,5 +19,7 @@ public interface MateriaGrupoService {
     ResponseEntity<String> update(int id, MateriaGrupoCreateDto materiaGrupoCreateDto);
 
     ResponseEntity<String> delete(int id);
+
+    List<MateriaGrupoDto> findAllByIdUsuario(UUID idUsuario);
 
 }

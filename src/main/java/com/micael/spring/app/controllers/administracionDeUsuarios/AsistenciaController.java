@@ -37,6 +37,13 @@ public class AsistenciaController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/usuarioId/{id}")
+    public List<AsistenciaDto> view(@PathVariable UUID id){
+
+        return   service.findAsistenciaPorId(id);
+    }
+
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody AsistenciaDto resp, BindingResult result){
         if(result.hasErrors()){

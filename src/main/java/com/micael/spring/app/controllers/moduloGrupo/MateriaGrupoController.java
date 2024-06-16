@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -25,6 +22,12 @@ public class MateriaGrupoController {
     @GetMapping
     public List<MateriaGrupoDto> list(){
         return service.findAll();
+    }
+
+
+    @GetMapping("/getByUser/{id}")
+    public List<MateriaGrupoDto> listAllId(@PathVariable UUID id){
+        return service.findAllByIdUsuario(id);
     }
 
     @GetMapping("/{id}")

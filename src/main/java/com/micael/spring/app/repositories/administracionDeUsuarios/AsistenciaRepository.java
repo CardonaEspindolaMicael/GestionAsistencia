@@ -51,4 +51,6 @@ public interface AsistenciaRepository extends CrudRepository<Asistencia, Integer
             nativeQuery = true)
     List<Integer> countDetalleByUsuarioId(@Param("userId") UUID userId);
 
+    @Query("SELECT a FROM Asistencia a WHERE a.usuario.id = :usuarioId")
+    List<Asistencia> findByUsuario_Id(UUID usuarioId);
 }
