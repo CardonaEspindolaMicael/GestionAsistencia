@@ -1,26 +1,24 @@
 package com.micael.spring.app.services.administracionDeUsuarios.AsistenciaServicios;
 
 import com.micael.spring.app.DTO.AsistenciaDto;
-import com.micael.spring.app.DTO.AsistenciaMarcarDto;
-import com.micael.spring.app.DTO.CarreraDto;
 import com.micael.spring.app.entities.administracionDeUsuarios.Asistencia;
 import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
-import com.micael.spring.app.entities.moduloGrupo.Grupo;
 import com.micael.spring.app.entities.moduloGrupo.MateriaGrupo;
-import com.micael.spring.app.entities.moduloUniversidad.Carrera;
-import com.micael.spring.app.entities.moduloUniversidad.Facultad;
 import com.micael.spring.app.repositories.administracionDeUsuarios.AsistenciaRepository;
 import com.micael.spring.app.repositories.administracionDeUsuarios.UsuarioRepository;
 import com.micael.spring.app.repositories.moduloGrupo.MateriaGrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+
 
 @Service
 public class AsistenciaServiceJPA implements AsistenciaService{
@@ -32,12 +30,11 @@ public class AsistenciaServiceJPA implements AsistenciaService{
     MateriaGrupoRepository materiaGrupoRepository;
 
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public List<AsistenciaDto> findAll() {
         List<Asistencia> asistencias= (List<Asistencia>) repository.findAll();
         List<AsistenciaDto> licenciaDTOList=new ArrayList<>();
-     //   crearAsistenciasParaTodosLosUsuario();
         if(!asistencias.isEmpty()){
             for(Asistencia asistencia:asistencias){
                 licenciaDTOList.add( new AsistenciaDto( asistencia.getId(),
@@ -124,7 +121,38 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                 .status(HttpStatus.ACCEPTED)
                 .body(Collections.singletonMap("message", "Asistencia Actualizada"));
     }
+    @Scheduled(cron = "0 0 0 * * *", zone = "America/La_Paz")
+    @Transactional
+   public void crearAsistenciasParaTodosLosUsuario() {
+       List<UUID> uuidList = repository.findUsuarioIds();
 
+       for (UUID uuid : uuidList) {
+           long cantidad = repository.countMateriasByUsuarioId(uuid);
+           List<Integer> uuidDet = repository.countDetalleByUsuarioId(uuid);
+           System.out.println("Cantidad de materias: " + cantidad);
+           System.out.println("Detalle de UUID: " + uuidDet);
 
+           for (int i = 0; i < cantidad; i++) {
+               Usuario usuario = usuarioRepository.findById(uuid).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+               // Asegúrate de que uuidDet tenga elementos antes de intentar acceder a ellos
+               if (!uuidDet.isEmpty()) {
+                   Integer detalleId = uuidDet.remove(0); // Remueve el primer elemento de la lista
+
+                   MateriaGrupo materiaGrupo = materiaGrupoRepository.findById(detalleId)
+                           .orElseThrow(() -> new RuntimeException("MateriaGrupo no encontrado"));
+
+                   Asistencia asistencia = new Asistencia();
+                   asistencia.setFecha(LocalDate.now());
+                   asistencia.setUsuario(usuario);
+                   asistencia.setMateriaGrupos(materiaGrupo);
+                   repository.save(asistencia);
+               } else {
+                   // Manejo de caso donde no hay más detalles disponibles
+                   System.out.println("No hay más detalles disponibles para el usuario con UUID: " + uuid);
+               }
+           }
+       }
+   }
 
 }

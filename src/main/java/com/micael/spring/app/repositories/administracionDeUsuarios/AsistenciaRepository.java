@@ -25,6 +25,30 @@ public interface AsistenciaRepository extends CrudRepository<Asistencia, Integer
                                                        @Param("fecha") LocalDate fecha,
                                                        @Param("time") LocalTime time);
 
+    @Query(value = "SELECT COUNT(*) " +
+            "FROM usuario u " +
+            "JOIN docente_facultad df ON u.id = df.id_usuario " +
+            "JOIN docente_ensena de ON df.id = de.id_docente_facu " +
+            "JOIN materia_grupo mg ON de.id = mg.id_docente_ensena " +
+            "WHERE u.id = :userId",
+            nativeQuery = true)
+    long countMateriasByUsuarioId(@Param("userId") UUID userId);
 
+    @Query(value = "SELECT DISTINCT u.id " +
+            "FROM usuario u " +
+            "JOIN docente_facultad df ON u.id = df.id_usuario " +
+            "JOIN docente_ensena de ON df.id = de.id_docente_facu " +
+            "JOIN materia_grupo mg ON de.id = mg.id_docente_ensena",
+            nativeQuery = true)
+    List<UUID> findUsuarioIds();
+
+    @Query(value = "SELECT mg.id " +
+            "FROM usuario u " +
+            "JOIN docente_facultad df ON u.id = df.id_usuario " +
+            "JOIN docente_ensena de ON df.id = de.id_docente_facu " +
+            "JOIN materia_grupo mg ON de.id = mg.id_docente_ensena " +
+            "WHERE u.id = :userId",
+            nativeQuery = true)
+    List<Integer> countDetalleByUsuarioId(@Param("userId") UUID userId);
 
 }
