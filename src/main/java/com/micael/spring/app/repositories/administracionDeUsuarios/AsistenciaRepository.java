@@ -53,4 +53,10 @@ public interface AsistenciaRepository extends CrudRepository<Asistencia, Integer
 
     @Query("SELECT a FROM Asistencia a WHERE a.usuario.id = :usuarioId")
     List<Asistencia> findByUsuario_Id(UUID usuarioId);
+
+
+    @Query("SELECT a FROM Asistencia a WHERE a.usuario.id = :usuarioId AND a.fecha=:fecha")
+    List<Asistencia> findByDateAndUsuario_Id(@Param("usuarioId") UUID usuarioId,
+                                             @Param("fecha") LocalDate fecha);
+
 }

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @CrossOrigin
@@ -41,6 +42,13 @@ public class AsistenciaController {
     public List<AsistenciaDto> view(@PathVariable UUID id){
 
         return   service.findAsistenciaPorId(id);
+    }
+
+
+    @GetMapping("/asistenciasUsuario/{id}/{fecha}")
+    public List<AsistenciaDto> view(@PathVariable UUID id,@PathVariable LocalDate fecha){
+
+        return   service.findPorDateAndUsuario_Id(id,fecha);
     }
 
 
