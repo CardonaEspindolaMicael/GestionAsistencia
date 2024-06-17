@@ -41,6 +41,8 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                         asistencia.isAsistio(),
                         asistencia.getFecha(),
                         asistencia.getHora(),
+                        asistencia.isFalta(),
+                        asistencia.isAtraso(),
                         asistencia.getUsuario().getId(),
                         asistencia.getMateriaGrupos().getId()
                 ));
@@ -60,6 +62,8 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                         asistencia.isAsistio(),
                         asistencia.getFecha(),
                         asistencia.getHora(),
+                        asistencia.isFalta(),
+                        asistencia.isAtraso(),
                         asistencia.getUsuario().getId(),
                         asistencia.getMateriaGrupos().getId()
                 ));
@@ -74,7 +78,9 @@ public class AsistenciaServiceJPA implements AsistenciaService{
 
         if(licencia.isPresent()){
             Asistencia licenciaResponse=licencia.orElseThrow(() -> new RuntimeException("no encontrada"));
-            return Optional.of(new AsistenciaDto(licenciaResponse.getId(), licenciaResponse.isAsistio(), licenciaResponse.getFecha(), licenciaResponse.getHora()
+            return Optional.of(new AsistenciaDto(licenciaResponse.getId(), licenciaResponse.isAsistio(), licenciaResponse.getFecha(), licenciaResponse.getHora(),
+                    licenciaResponse.isFalta(),
+                    licenciaResponse.isAtraso()
                     ,licenciaResponse.getUsuario().getId(),licenciaResponse.getMateriaGrupos().getId()));
 
         }
@@ -87,7 +93,8 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         MateriaGrupo materiaGrupo = materiaGrupoRepository.findById(asistencia.getId_materiaGrupo()).orElseThrow();
         asistencia.prePersist();
-       repository.save(new Asistencia(asistencia.getId(), asistencia.isAsistio(), asistencia.getFecha(), asistencia.getHora()
+       repository.save(new Asistencia(asistencia.getId(), asistencia.isAsistio(), asistencia.getFecha(), asistencia.getHora(),false,false
+
                ,usuario,materiaGrupo));
         return ResponseEntity.ok("Creado exitosamente");
     }
@@ -132,8 +139,13 @@ public class AsistenciaServiceJPA implements AsistenciaService{
             }
             Asistencia asistenciaUpdate = repository.findById(asistencia.getId()).orElseThrow();
             asistenciaUpdate.setAsistio(true);
+            asistenciaUpdate.setFalta(false);
+            LocalTime horaActual= LocalTime.now();
+            if(horaActual.isAfter(asistenciaUpdate.getMateriaGrupos().getHorario().getHoraInicio().plusMinutes(10))){
+                asistenciaUpdate.setAtraso(true);
+            }
             asistenciaUpdate.setFecha(LocalDate.now());
-            asistenciaUpdate.setHora(LocalTime.now());
+            asistenciaUpdate.setHora(horaActual);
         }
         Map<String, Object> body = new HashMap<>();
         body.put("message", "Asistencia Actualizada");
@@ -143,7 +155,7 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                 .status(HttpStatus.ACCEPTED)
                 .body(body);
           }
-    @Scheduled(cron = "0 0 0 * * *", zone = "America/La_Paz")
+    @Scheduled(cron = "0 00 11 * * *", zone = "America/La_Paz")
     @Transactional
    public void crearAsistenciasParaTodosLosUsuario() {
        List<UUID> uuidList = repository.findUsuarioIds();
@@ -168,7 +180,9 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                    asistencia.setFecha(LocalDate.now());
                    asistencia.setUsuario(usuario);
                    asistencia.setMateriaGrupos(materiaGrupo);
-
+                   asistencia.setAtraso(false);
+                   asistencia.setAsistio(false);
+                   asistencia.setFalta(true);
                    repository.save(asistencia);
                } else {
                    // Manejo de caso donde no hay más detalles disponibles

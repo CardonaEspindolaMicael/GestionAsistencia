@@ -17,6 +17,8 @@ public class AsistenciaDto {
     boolean asistio=false;
     LocalDate fecha;
     LocalTime hora;
+    boolean falta;
+    boolean atraso;
     UUID id_usuario;
     int id_materiaGrupo;
 

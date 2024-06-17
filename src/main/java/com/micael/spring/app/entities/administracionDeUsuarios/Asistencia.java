@@ -21,6 +21,8 @@ public class Asistencia {
     private boolean asistio;
     private LocalDate fecha;
     private LocalTime hora;
+    private boolean falta;
+    private boolean atraso;
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
