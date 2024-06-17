@@ -40,7 +40,7 @@ public class AulaServiceJPA implements AulaService{
     @Transactional
     @Override
     public ResponseEntity<String> update(int id, Aula aula) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
     @Transactional
     @Override

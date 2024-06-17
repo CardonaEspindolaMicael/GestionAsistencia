@@ -67,7 +67,7 @@ public class ModuloFacultativoServiceJPA implements ModuloFacultativoService{
     @Transactional
     @Override
     public ResponseEntity<String> update(int id, ModuloFacultativoDto modulo) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
     @Transactional
     @Override

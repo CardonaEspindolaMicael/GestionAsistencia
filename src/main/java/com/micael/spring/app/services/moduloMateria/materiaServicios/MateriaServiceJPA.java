@@ -60,7 +60,7 @@ public class MateriaServiceJPA implements MateriaService {
         ));
         return  materiaOptional;
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> save(MateriaDto materiaDto) {
         Area area = areaRepository.findById(materiaDto.getId_area())
@@ -70,12 +70,12 @@ public class MateriaServiceJPA implements MateriaService {
         repository.save(materia);
         return ResponseEntity.ok("Creado exitosamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> update(int id, MateriaDto materiaDto) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> delete(int id) {
         Optional<Materia> porID= repository.findById(id);

@@ -75,6 +75,7 @@ public class DocenteEnsenaServiceJPA implements DocenteEnsenaService{
         }
         return Optional.empty();
     }
+    @Transactional
     @Override
     public ResponseEntity<String> save(DocenteEnsenaCreateDto docenteEnsena) {
         DocenteFacultad docenteFacultad= docenteFacultadRepository.findById(docenteEnsena.getId_docenteFacultad()).orElseThrow();
@@ -83,12 +84,12 @@ public class DocenteEnsenaServiceJPA implements DocenteEnsenaService{
          repository.save(licencia);
         return ResponseEntity.ok("creado correctamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> update(int id, DocenteEnsenaCreateDto docenteEnsena) {
-return null;
+        return ResponseEntity.ok("Proximamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> delete(int id) {
         Optional<DocenteEnsena> docFacPorID= repository.findById(id);

@@ -89,6 +89,7 @@ public class CarreraMateriaServiceJPA implements CarreraMateriaService{
 
     }
 
+    @Transactional
     @Override
     public ResponseEntity<String> save(CarreraMateriaCreateDto carreraMat) {
         Carrera carrera = carreraRepository.findById(carreraMat.getId_carrera()).orElseThrow();
@@ -97,12 +98,12 @@ public class CarreraMateriaServiceJPA implements CarreraMateriaService{
         return ResponseEntity.ok("Creado exitosamente");
 
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> update(int id, CarreraMateriaCreateDto carreraMat) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> delete(int id) {
         Optional<CarreraMateria> porID= repository.findById(id);
@@ -114,7 +115,7 @@ public class CarreraMateriaServiceJPA implements CarreraMateriaService{
         });
         return new ResponseEntity<>("Eliminado con exito", HttpStatus.ACCEPTED);
     }
-
+    @Transactional
     @Override
     public List<CarreraMateriaDto> findByCarreraId(Integer carreraId) {
         List<CarreraMateria> licencias = (List<CarreraMateria>) repository.findByCarreraId(carreraId);

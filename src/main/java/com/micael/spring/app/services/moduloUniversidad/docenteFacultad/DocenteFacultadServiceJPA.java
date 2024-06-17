@@ -75,7 +75,7 @@ public class DocenteFacultadServiceJPA implements DocenteFacultadService{
     @Transactional
     @Override
     public ResponseEntity<String> update(int id, DocenteFacultadDto docenteFac) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
 
     @Transactional

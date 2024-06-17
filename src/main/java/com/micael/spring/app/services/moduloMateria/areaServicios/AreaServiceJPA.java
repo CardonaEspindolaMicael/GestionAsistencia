@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ public class AreaServiceJPA implements AreaService{
     @Autowired
     MateriaRepository materiaRepository;
 
+
+    @Transactional
     @Override
     public List<Area> findAll() {
 
@@ -50,7 +53,7 @@ public class AreaServiceJPA implements AreaService{
         }
         return dtoList;
     }
-
+    @Transactional
     @Override
     public Optional<Area> findById(int id) {
         Area area= repository.findById(id).orElseThrow();
@@ -77,7 +80,7 @@ public class AreaServiceJPA implements AreaService{
 
 
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> save(Area area) {
         try {
@@ -87,12 +90,12 @@ public class AreaServiceJPA implements AreaService{
         }
         return ResponseEntity.ok("Creado exitosamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> update(int id, Area area) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> delete(int id) {
         Optional<Area> porID= repository.findById(id);

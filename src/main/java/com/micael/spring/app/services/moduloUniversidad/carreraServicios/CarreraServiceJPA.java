@@ -70,7 +70,7 @@ public class CarreraServiceJPA implements CarreraService{
     @Transactional
     @Override
     public ResponseEntity<String> update(int id, CarreraDto carrera) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
 
     @Transactional

@@ -73,10 +73,10 @@ public class ModuloEnsenanzaServiceJPA implements ModuloEnsenanzaService {
         repository.save(new ModuloEnsenanza(moduloEnsenanza.getId(),moduloFacultativo,docenteEnsena));
         return ResponseEntity.ok("creado correctamente");
     }
-
+    @Transactional
     @Override
     public ResponseEntity<String> update(int id, ModuloEnsenanzaCreateDto moduloEnsenanza) {
-        return null;
+        return ResponseEntity.ok("Proximamente");
     }
 
     @Transactional

@@ -76,17 +76,17 @@ public class UsuarioServiceJPA implements UsuarioService {
         });
         return usuarioPorID;
     }
-
+    @Transactional
     @Override
     public boolean existsByTelefono(Long telefono) {
         return repository.existsByTelefono(telefono);
     }
-
+    @Transactional
     @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
-
+    @Transactional
     @Override
     public Optional<Usuario> findByEmail(String email) {
         return repository.findByEmail(email);
