@@ -176,7 +176,7 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                 .status(HttpStatus.ACCEPTED)
                 .body(body);
           }
-    @Scheduled(cron = "0 00 11 * * *", zone = "America/La_Paz")
+    @Scheduled(cron = "0 0 0 * * MON-FRI", zone = "America/La_Paz")
     @Transactional
    public void crearAsistenciasParaTodosLosUsuario() {
        List<UUID> uuidList = repository.findUsuarioIds();
