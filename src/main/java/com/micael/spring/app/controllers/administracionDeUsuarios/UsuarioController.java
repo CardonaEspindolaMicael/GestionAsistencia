@@ -11,9 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
+
 public class UsuarioController {
     @Autowired
     private UsuarioService service;

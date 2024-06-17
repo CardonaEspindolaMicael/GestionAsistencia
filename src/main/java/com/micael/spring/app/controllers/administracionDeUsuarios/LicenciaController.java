@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/licencias")
 public class LicenciaController {

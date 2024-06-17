@@ -50,7 +50,8 @@ AuthenticationManager authenticationManager() throws Exception {
                  } catch (Exception e) {
                      throw new RuntimeException(e);
                  }
-             }).sessionManagement(management -> {
+             }).cors(cors->cors.configurationSource(corsConfigurationSource()))
+             .sessionManagement(management -> {
          management.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
      }).build();
  }
