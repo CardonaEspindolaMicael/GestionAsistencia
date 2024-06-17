@@ -96,7 +96,15 @@ public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
     @Transactional
     @Override
     public ResponseEntity<String> update(int id, MateriaGrupoCreateDto materiaGrupoCreateDto) {
-        return null;
+        MateriaGrupo materiaGrupo=repository.findById(id).orElseThrow();
+        Aula aula=aulaRepository.findById(materiaGrupoCreateDto.getId_aula()).orElseThrow();
+        Horario horario=horarioRepository.findById(materiaGrupoCreateDto.getId_horario()).orElseThrow();
+        Grupo grupo=grupoRepository.findById(materiaGrupoCreateDto.getId_grupo()).orElseThrow();
+        materiaGrupo.setHorario(horario);
+        materiaGrupo.setAula(aula);
+        materiaGrupo.setGrupo(grupo);
+
+        return  ResponseEntity.ok("Todo posi");
     }
 
     @Transactional

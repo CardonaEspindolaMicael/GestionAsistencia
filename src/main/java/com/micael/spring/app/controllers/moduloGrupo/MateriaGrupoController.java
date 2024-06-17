@@ -2,6 +2,8 @@ package com.micael.spring.app.controllers.moduloGrupo;
 
 import com.micael.spring.app.DTO.MateriaGrupoCreateDto;
 import com.micael.spring.app.DTO.MateriaGrupoDto;
+import com.micael.spring.app.DTO.UsuarioDto;
+import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
 import com.micael.spring.app.entities.moduloGrupo.Horario;
 import com.micael.spring.app.services.moduloGrupo.materiaGrupoServicios.MateriaGrupoService;
 import jakarta.validation.Valid;
@@ -46,6 +48,16 @@ public class MateriaGrupoController {
         }
         return  service.save(resp);
     }
+    @PutMapping("/{id}")
+    public  ResponseEntity<?> update(@Valid @RequestBody MateriaGrupoCreateDto usuario, BindingResult result, @PathVariable int id){
+        if(result.hasErrors()){
+            return validation(result);
+        }
+
+        return service.update(id,usuario);
+
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id){
