@@ -127,7 +127,7 @@ public class AsistenciaServiceJPA implements AsistenciaService{
         for (Asistencia asistencia : asistenciaList) {
             if (asistencia.isAsistio()) {
                 return ResponseEntity
-                        .status(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
+                        .status(HttpStatus.FORBIDDEN)
                         .body(Collections.singletonMap("message", "Usted ya agrego su asistencia en este horario"));
             }
             Asistencia asistenciaUpdate = repository.findById(asistencia.getId()).orElseThrow();
@@ -168,6 +168,7 @@ public class AsistenciaServiceJPA implements AsistenciaService{
                    asistencia.setFecha(LocalDate.now());
                    asistencia.setUsuario(usuario);
                    asistencia.setMateriaGrupos(materiaGrupo);
+
                    repository.save(asistencia);
                } else {
                    // Manejo de caso donde no hay más detalles disponibles

@@ -63,8 +63,23 @@ public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
     @Transactional(readOnly = true)
     @Override
     public Optional<MateriaGrupoDto> findById(int id) {
-        return Optional.empty();
+        MateriaGrupo materiaGrupo = repository.findById(id).orElseThrow();
+        DocenteEnsena docenteEnsena = docenteEnsenaRepository.findById(materiaGrupo.getDocenteEnsena().getId()).orElseThrow();
+
+        return Optional.of(new MateriaGrupoDto(
+                materiaGrupo.getId(),
+                new DocenteEnsenaDto(
+                        docenteEnsena.getId(),
+                        docenteEnsena.getGestion(),
+                        docenteEnsena.getDocenteFacultad(),
+                        docenteEnsena.getMateria()
+                ),
+                materiaGrupo.getAula(),
+                materiaGrupo.getGrupo(),
+                materiaGrupo.getHorario()
+        ));
     }
+
 
     @Transactional
     @Override
