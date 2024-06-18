@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
@@ -83,14 +80,24 @@ public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
 
     @Transactional
     @Override
-    public ResponseEntity<String> save(MateriaGrupoCreateDto materiaGrupoCreateDto) {
+    public ResponseEntity<Object> save(MateriaGrupoCreateDto materiaGrupoCreateDto) {
+
         DocenteEnsena docenteEnsena=docenteEnsenaRepository.findById(materiaGrupoCreateDto.getId_docenteEnsena()).orElseThrow();
+        if(validarHorario(docenteEnsena.getDocenteFacultad().getUsuario().getId(), materiaGrupoCreateDto.getId_horario())){
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("message", "Esto ocasiona un choque de horario"));
+
+        }
         Aula aula=aulaRepository.findById(materiaGrupoCreateDto.getId_aula()).orElseThrow();
         Grupo grupo=grupoRepository.findById(materiaGrupoCreateDto.getId_grupo()).orElseThrow();
         Horario horario=horarioRepository.findById(materiaGrupoCreateDto.getId_horario()).orElseThrow();
 
         repository.save(new MateriaGrupo(materiaGrupoCreateDto.getId(), docenteEnsena,aula,grupo,horario,null));
-        return  ResponseEntity.ok("Todo posi");
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(Collections.singletonMap("message", "Todo posi"));
+
     }
 
     @Transactional
@@ -116,7 +123,11 @@ public class MateriaGrupoServiceJPA  implements MateriaGrupoService{
         });
         return new ResponseEntity<>("Eliminado con exito", HttpStatus.ACCEPTED);
     }
+    public boolean validarHorario(UUID id_usuario,int id_horario){
+        List<Integer> horariosDelUsuario=repository.findHorarioByUsuarioId(id_usuario);
 
+        return horariosDelUsuario.contains(id_horario);
+    }
     @Transactional(readOnly = true)
     @Override
     public List<MateriaGrupoDto> findAllByIdUsuario(UUID idUsuario) {

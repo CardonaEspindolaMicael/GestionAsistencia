@@ -18,4 +18,13 @@ public interface MateriaGrupoRepository extends CrudRepository<MateriaGrupo,Inte
             "WHERE u.id = :userId",
             nativeQuery = true)
     List<MateriaGrupo> findMateriaGrupoById(@Param("userId") UUID userId);
+
+    @Query(value = "SELECT DISTINCT mg.id_horario " +
+            "FROM usuario u " +
+            "JOIN docente_facultad df ON u.id = df.id_usuario " +
+            "JOIN docente_ensena de ON df.id = de.id_docente_facu " +
+            "JOIN materia_grupo mg ON de.id = mg.id_docente_ensena " +
+            "WHERE u.id = :userId",
+            nativeQuery = true)
+    List<Integer> findHorarioByUsuarioId(@Param("userId") UUID userId);
 }

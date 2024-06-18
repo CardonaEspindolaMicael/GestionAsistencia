@@ -2,9 +2,6 @@ package com.micael.spring.app.controllers.moduloGrupo;
 
 import com.micael.spring.app.DTO.MateriaGrupoCreateDto;
 import com.micael.spring.app.DTO.MateriaGrupoDto;
-import com.micael.spring.app.DTO.UsuarioDto;
-import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
-import com.micael.spring.app.entities.moduloGrupo.Horario;
 import com.micael.spring.app.services.moduloGrupo.materiaGrupoServicios.MateriaGrupoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,7 @@ public class MateriaGrupoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody MateriaGrupoCreateDto resp, BindingResult result){
+    public ResponseEntity<Object>  create(@Valid @RequestBody MateriaGrupoCreateDto resp, BindingResult result){
         if(result.hasErrors()){
             return validation(result);
         }
@@ -68,7 +65,7 @@ public class MateriaGrupoController {
         return ResponseEntity.notFound().build();
     }
 
-    private ResponseEntity<?> validation(BindingResult result) {
+    private ResponseEntity<Object>  validation(BindingResult result) {
         Map<String,String> errors= new HashMap<>();
         result.getFieldErrors().forEach(err ->{
             errors.put(err.getField(),"El campo "+err.getField()+" "+err.getDefaultMessage());

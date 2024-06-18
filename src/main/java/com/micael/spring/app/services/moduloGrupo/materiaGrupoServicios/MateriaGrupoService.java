@@ -14,7 +14,7 @@ public interface MateriaGrupoService {
 
     Optional<MateriaGrupoDto> findById(int id);
 
-    ResponseEntity<String> save(MateriaGrupoCreateDto materiaGrupoCreateDto);
+    ResponseEntity<Object> save(MateriaGrupoCreateDto materiaGrupoCreateDto);
 
     ResponseEntity<String> update(int id, MateriaGrupoCreateDto materiaGrupoCreateDto);
 
