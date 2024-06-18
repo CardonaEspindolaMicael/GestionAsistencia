@@ -31,7 +31,10 @@ public class UsuarioController {
         }
         return ResponseEntity.notFound().build();
     }
-
+    @GetMapping("/holaMundo")
+    public String mensaje(){
+        return  "Hola mundo";
+    }
     @GetMapping("/byEmail/{email}")
     public ResponseEntity<?> viewEmail(@PathVariable String email){
         System.out.println(email);

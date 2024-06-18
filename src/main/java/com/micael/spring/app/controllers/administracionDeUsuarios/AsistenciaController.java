@@ -1,12 +1,5 @@
 package com.micael.spring.app.controllers.administracionDeUsuarios;
-
-
 import com.micael.spring.app.DTO.AsistenciaDto;
-import com.micael.spring.app.DTO.AsistenciaMarcarDto;
-import com.micael.spring.app.DTO.UsuarioDto;
-import com.micael.spring.app.entities.administracionDeUsuarios.Asistencia;
-import com.micael.spring.app.entities.administracionDeUsuarios.Usuario;
-import com.micael.spring.app.entities.moduloGrupo.Grupo;
 import com.micael.spring.app.services.administracionDeUsuarios.AsistenciaServicios.AsistenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +30,9 @@ public class AsistenciaController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+
 
     @GetMapping("/usuarioId/{id}")
     public List<AsistenciaDto> view(@PathVariable UUID id){
